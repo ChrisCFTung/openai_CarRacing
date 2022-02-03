@@ -5,6 +5,6 @@ DQN to solve CarRacing
 
 `agent.py` - include the DQN structure and the agent to interact with the modified `CarRacing-v0` environment
 
-`train.py` - as the name suggest, it should begin the training procedure for the agent
+`train.py` - as the name suggests, it should begin the training procedure for the agent
 
 `run_model.py` - run the trained agent in the game
