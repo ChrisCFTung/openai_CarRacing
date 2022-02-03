@@ -16,8 +16,9 @@ from gym.wrappers import FrameStack
 from gym_torch import *
 from agent import *
 
-import os    
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
+# Comment out the next two lines if on mac or unix
+# import os    
+# os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 env = env_make()
 
@@ -28,7 +29,7 @@ print()
 save_dir = Path("checkpoints") / datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
 save_dir.mkdir(parents=True)
 
-lulu = lewis(state_dim=(3, 80, 96), action_dim=9, save_dir=save_dir)
+lulu = lewis(state_dim=env.obseravtion_space.shape, action_dim=5, save_dir=save_dir)
 #lulu.load('checkpoints\\2022-02-01T22-47-14\\lewis_net_0.chkpt')
 
 logger = MetricLogger(save_dir)
