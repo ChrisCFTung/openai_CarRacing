@@ -16,9 +16,8 @@ from gym.wrappers import FrameStack
 from gym_torch import *
 from agent import *
 
-# Comment out the next two lines if on mac or unix
-# import os    
-# os.environ['KMP_DUPLICATE_LIB_OK']='True'
+import os    
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 env = env_make()
 
@@ -29,12 +28,12 @@ print()
 save_dir = Path("checkpoints") / datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
 save_dir.mkdir(parents=True)
 
-lulu = lewis(state_dim=env.obseravtion_space.shape, action_dim=5, save_dir=save_dir)
+lulu = lewis(state_dim=env.observation_space.shape, action_dim=env.action_space.high[0]+1, save_dir=save_dir)
 #lulu.load('checkpoints\\2022-02-01T22-47-14\\lewis_net_0.chkpt')
 
 logger = MetricLogger(save_dir)
 
-episodes = 1000
+episodes = 5000
 for ep in range(episodes):
     state = env.reset()
     
@@ -54,7 +53,7 @@ for ep in range(episodes):
         logger.log_step(reward, loss, q)
         state = next_state
         
-        if done or logger.curr_ep_reward<0 or neg_counter>10:
+        if done or logger.curr_ep_reward<0 or neg_counter>25:
             break
     
     logger.log_episode()
@@ -64,5 +63,5 @@ for ep in range(episodes):
         
     if ep%100 ==0:
         lulu.save()
-        
+lulu.save()        
 env.close()

@@ -31,12 +31,15 @@ class LewisNet(nn.Module):
         self.online = nn.Sequential(
             nn.Conv2d(in_channels=c, out_channels=32, kernel_size=8, stride=4),
             nn.ReLU(),
+            nn.MaxPool2d((2,2), stride=1),
             nn.Conv2d(in_channels=32, out_channels=64, kernel_size=4, stride=4),
             nn.ReLU(),
+            nn.MaxPool2d((2,2), stride=1),
             nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=1),
             nn.ReLU(),
+            #nn.MaxPool2d(2, stride=2),
             nn.Flatten(),
-            nn.Linear(384, 512),
+            nn.Linear(128, 512),
             nn.ReLU(),
             nn.Linear(512, output_dim),
         )
@@ -69,22 +72,22 @@ class lewis:
             self.net = self.net.to(device="cuda")
             
         self.exploration_rate = 1
-        self.exploration_rate_decay = 0.9999975
+        self.exploration_rate_decay = 0.9999
         self.exploration_rate_min = 0.1
         self.curr_step = 0
         
-        self.save_every = 5e5 # no. of experiences between saving
+        self.save_every = 1e5 # no. of experiences between saving
         
         # cache and recall
-        self.memory = deque(maxlen=50000)
+        self.memory = deque(maxlen=10000)
         self.batch_size = 32
         
         # learn
         self.gamma = 0.9
-        self.optimizer = torch.optim.Adam(self.net.parameters(), lr=0.001)
+        self.optimizer = torch.optim.Adam(self.net.parameters(), lr=0.0001)
         self.loss_fn = torch.nn.MSELoss() #torch.nn.SmoothL1Loss()
         
-        self.burnin = 100
+        self.burnin = 1000
         self.learn_every = 3
         self.sync_every = 200
         

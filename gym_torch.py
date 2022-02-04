@@ -18,13 +18,12 @@ class BasicWrapper(gym.Wrapper):
     def __init__(self, env):
         super().__init__(env)
         self.env = env
-        self.__actions__ = [[-0.7, 0., 0.],
-                             [0.7, 0., 0.],
-                             [0., 0.7, 0.],
-                             [0., 0., 0.5],
-                             [0., 0., 0.]]
+        self.__actions__ = [(-1, 1, 0.2), (0, 1, 0.2), (1, 1, 0.2), #           Action Space Structure
+                            (-1, 1,   0), (0, 1,   0), (1, 1,   0), #        (Steering Wheel, Gas, Break)
+                            (-1, 0, 0.2), (0, 0, 0.2), (1, 0, 0.2), # Range        -1~1       0~1   0~1
+                            (-1, 0,   0), (0, 0,   0), (1, 0,   0)]
         
-        self.action_space = Box(0, 4, shape=(1,), dtype=np.int8)
+        self.action_space = Box(0, 11, shape=(1,), dtype=np.int8)
         
     def step(self, action):
         next_state, reward, done, info = self.env.step(self.__actions__[action])
@@ -173,7 +172,7 @@ class MetricLogger:
             plt.savefig(getattr(self, f"{metric}_plot"))
             plt.clf()
     
-def env_make():
+def env_make(skip=2, stack=3):
     env = gym.make('CarRacing-v0')
     env.unwrapped.verbose=0
     env = SkipFrame(env, 2)
