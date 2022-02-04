@@ -61,7 +61,5 @@ for ep in range(episodes):
     if ep%20 ==0:
         logger.record(episode=ep, epsilon=lulu.exploration_rate, step=lulu.curr_step)
         
-    if ep%100 ==0:
-        lulu.save()
 lulu.save()        
 env.close()
