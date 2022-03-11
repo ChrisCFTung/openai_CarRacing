@@ -72,8 +72,8 @@ class lewis:
             self.net = self.net.to(device="cuda")
             
         self.exploration_rate = 1
-        self.exploration_rate_decay = 0.99995
-        self.exploration_rate_min = 0.1
+        self.exploration_rate_decay = 0.9999975
+        self.exploration_rate_min = 0.3
         self.curr_step = 0
         
         self.save_every = 1e5 # no. of experiences between saving
@@ -191,7 +191,7 @@ class lewis:
     
     @torch.no_grad()
     def td_target(self, reward, next_state, done):
-        next_state_Q = self.net(next_state, model="target")
+        next_state_Q = self.net(next_state, model="online")
         best_action = torch.argmax(next_state_Q, axis=1)
         next_Q = self.net(next_state, model='target')[
             np.arange(0, self.batch_size), best_action
@@ -206,6 +206,9 @@ class lewis:
         return loss.item()
     
     def sync_Q_target(self):
+        # for tar_p, p in zip(self.net.target.parameters(), self.net.online.parameters()):
+        #     tar_p.data.mul_(0.95)
+        #     tar_p.data.add_((1-0.95)*p.data)
         self.net.target.load_state_dict(self.net.online.state_dict())
         
     def save(self):

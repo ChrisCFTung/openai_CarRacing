@@ -42,7 +42,7 @@ if float(eps) >= 0.:
 print(lulu.exploration_rate)
 
 
-for frame in range(2000):
+for _ in range(5000):
     env.render()
     action = lulu.act(state)
     next_state, reward, done, info = env.step(action)

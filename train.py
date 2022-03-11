@@ -29,12 +29,15 @@ save_dir = Path("checkpoints") / datetime.datetime.now().strftime("%Y-%m-%dT%H-%
 save_dir.mkdir(parents=True)
 
 lulu = lewis(state_dim=env.observation_space.shape, action_dim=env.action_space.high[0]+1, save_dir=save_dir)
-#lulu.load('checkpoints\\2022-02-01T22-47-14\\lewis_net_0.chkpt')
+lulu.load('checkpoints\\2022-03-11T10-43-24\\lewis_net_2.chkpt')
+lulu.exploration_rate_min = 0.1
+lulu.exploration_rate = 0.1
 
 logger = MetricLogger(save_dir)
 
-episodes = 5000
+episodes = 2000
 for ep in range(episodes):
+    #env.seed(1)
     state = env.reset()
     
     while True:

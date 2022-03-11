@@ -18,9 +18,11 @@ class BasicWrapper(gym.Wrapper):
     def __init__(self, env):
         super().__init__(env)
         self.env = env
-        self.__actions__ = [(-1, 1, 0.2), (0, 1, 0.2), (1, 1, 0.2), #           Action Space Structure
+        self.__actions__ = [(-1, 0.2, 0.), (0, 0.2, 0.), (1, 0.2, 0.),
+                            (-1, 0.5, 0.), (0, 0.5, 0.), (1, 0.5, 0.), #           Action Space Structure
                             (-1, 1,   0), (0, 1,   0), (1, 1,   0), #        (Steering Wheel, Gas, Break)
-                            (-1, 0, 0.2), (0, 0, 0.2), (1, 0, 0.2), # Range        -1~1       0~1   0~1
+                            (-1, 0, 0.8), (0, 0, 0.8), (1, 0, 0.8), # Range        -1~1       0~1   0~1
+                            (-1, 0, 0.3), (0, 0, 0.3), (1, 0, 0.3),
                             (-1, 0,   0), (0, 0,   0), (1, 0,   0)]
 #                            [(-1.0, 0.0, 0.2), (0.0, 1.0, 0.0), (1.0, 0.0, 0.2), #           Action Space Structure
 #                             (-0.5, 0.5, 0.0), (0.0, 0.5, 0.0), (0.5, 0.5, 0.0), #        (Steering Wheel, Gas, Break)
